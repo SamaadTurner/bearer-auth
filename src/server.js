@@ -10,8 +10,6 @@ const errorHandler = require('./error-handlers/500.js');
 const notFound = require('./error-handlers/404.js');
 const authRoutes = require('./auth/router/index.js');
 
-const bearerAuth = require('./auth/middleware/bearer.js');
-
 // Prepare the express app
 const app = express();
 
@@ -29,15 +27,9 @@ app.use(authRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// token auth route
-app.get('/secretstuff', bearerAuth, (req, res) => {
-  console.log('AUTHENTICATE USER', req.user);
-  res.send({data: req.user});
-});
-
 module.exports = {
   server: app,
-  start: (port) => {
+  startup: (port) => {
     app.listen(port, () => {
       console.log(`Server Up on ${port}`);
     });
